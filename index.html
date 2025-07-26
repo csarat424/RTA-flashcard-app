@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residential Tenancy Act Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #search-container {
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        #search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        .flashcard-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+            justify-items: center;
+        }
+        .flashcard {
+            width: 400px;
+            height: 250px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard:hover .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .flashcard-front {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+        }
+        .flashcard-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+        .law-section {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f1c40f;
+        }
+        .layer {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+        .layer-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .layer-content {
+            font-size: 14px;
+            color: #333;
+        }
+        .use-case {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #555;
+        }
+        @media (max-width: 900px) {
+            .flashcard-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .flashcard-container {
+                grid-template-columns: 1fr;
+            }
+            .flashcard {
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            #search-input {
+                font-size: 14px;
+            }
+            .law-section {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Residential Tenancy Act Flashcards</h1>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search by issue or section...">
+    </div>
+    <div class="flashcard-container" id="flashcard-container"></div>
+
+    <script>
+        const flashcards = [
+            {
+                issue: "Landlord wants to end tenancy for personal use",
+                section: "Section 49 - Landlord's Use",
+                whatItSays: "Landlord may end tenancy if they or a close family member intends to occupy the unit, with 2 months' notice.",
+                whatItMeans: "Landlords can reclaim their property for personal or family use but must act in good faith.",
+                example: "Landlord gives tenant 2 months' notice because their child will move into the unit.",
+                exceptions: "If landlord doesn't use the unit as stated, tenant may get 12 months' rent compensation.",
+                useCase: "When tenant asks: 'Can my landlord evict me to move in?' → 'Yes, under Sec. 49, with 2 months' notice, but they must use the unit or compensate you.'"
+            },
+            {
+                issue: "Tenant fails to pay rent",
+                section: "Section 46 - Non-Payment of Rent",
+                whatItSays: "Landlord can issue a 10-day notice to end tenancy if rent is unpaid after the due date.",
+                whatItMeans: "Tenants must pay rent on time or risk eviction, but they can dispute or pay within 5 days.",
+                example: "Tenant misses rent on July 1; landlord issues notice on July 2, giving 10 days to pay.",
+                exceptions: "Notice is void if tenant pays rent or disputes within 5 days.",
+                useCase: "When tenant asks: 'What happens if I miss rent?' → 'Sec. 46 allows a 10-day notice to end tenancy, but you can pay or dispute within 5 days.'"
+            },
+            {
+                issue: "Repairs needed in rental unit",
+                section: "Section 32 - Repairs and Maintenance",
+                whatItSays: "Landlords must maintain units to meet health, safety, and housing standards.",
+                whatItMeans: "Landlords are responsible for fixing issues like leaks or broken heating.",
+                example: "Tenant reports a broken heater; landlord must arrange repairs promptly.",
+                exceptions: "Tenants may be liable for damage they cause intentionally.",
+                useCase: "When tenant asks: 'Who fixes a leaking pipe?' → 'Sec. 32 requires the landlord to handle repairs unless you caused the damage.'"
+            },
+            {
+                issue: "Security deposit disputes",
+                section: "Section 38 - Return of Security Deposit",
+                whatItSays: "Landlord must return security deposit within 15 days of tenancy end or tenant's address.",
+                whatItMeans: "Tenants get their deposit back unless landlord has valid deductions.",
+                example: "Tenant moves out; landlord returns deposit by day 15 or applies for RTB approval to keep it.",
+                exceptions: "Landlord can keep deposit for unpaid rent or damage with RTB approval.",
+                useCase: "When tenant asks: 'When do I get my deposit back?' → 'Sec. 38 says within 15 days unless landlord claims deductions via RTB.'"
+            },
+            {
+                issue: "Tenant wants to sublet or assign tenancy",
+                section: "Section 34 - Subletting or Assignment",
+                whatItSays: "Tenants need landlord's written consent to sublet or assign the tenancy.",
+                whatItMeans: "Tenants can't pass their lease to someone else without landlord approval.",
+                example: "Tenant wants to sublet for 6 months; landlord reviews subtenant before consenting.",
+                exceptions: "Landlord can't unreasonably withhold consent for fixed-term tenancies with 6+ months left.",
+                useCase: "When tenant asks: 'Can I sublet my place?' → 'Sec. 34 requires landlord’s written consent, but they can’t unreasonably refuse.'"
+            },
+            {
+                issue: "Landlord entry into rental unit",
+                section: "Section 29 - Landlord's Right of Entry",
+                whatItSays: "Landlord must give 24 hours' written notice for entry, except in emergencies.",
+                whatItMeans: "Landlords can't enter freely; they need notice or tenant permission.",
+                example: "Landlord gives 24-hour notice for a repair visit between 10am-12pm.",
+                exceptions: "No notice needed for emergencies (e.g., burst pipe) or abandoned units.",
+                useCase: "When tenant asks: 'Can my landlord enter without notice?' → 'Sec. 29 requires 24hr notice unless it’s an emergency.'"
+            },
+            {
+                issue: "Rent increase restrictions",
+                section: "Section 43 - Rent Increases",
+                whatItSays: "Landlords can increase rent once per year by the regulated amount with 3 months' notice.",
+                whatItMeans: "Rent hikes are limited to prevent unfair increases.",
+                example: "Landlord gives 3 months' notice for a 3.5% rent increase, per BC guidelines.",
+                exceptions: "No restrictions if tenant agrees to additional services.",
+                useCase: "When tenant asks: 'Can my rent go up?' → 'Sec. 43 allows one annual increase with 3 months' notice, per BC rules.'"
+            },
+            {
+                issue: "Dispute resolution process",
+                section: "Section 58 - Dispute Resolution",
+                whatItSays: "Landlords and tenants can apply to RTB for dispute resolution with evidence.",
+                whatItMeans: "RTB helps resolve conflicts when parties can’t agree.",
+                example: "Tenant applies to RTB to dispute an eviction notice, providing evidence.",
+                exceptions: "Some issues (e.g., constitutional questions) go to court, not RTB.",
+                useCase: "When tenant asks: 'How do I challenge an eviction?' → 'Sec. 58 allows you to apply to RTB with evidence for a hearing.'"
+            },
+            {
+                issue: "Eviction for cause",
+                section: "Section 47 - Eviction for Cause",
+                whatItSays: "Landlord can end tenancy for cause (e.g., disturbances) with 1 month's notice.",
+                whatItMeans: "Tenants can be evicted for serious rule-breaking but have dispute rights.",
+                example: "Tenant repeatedly disturbs neighbors; landlord issues 1-month notice.",
+                exceptions: "Tenant can dispute within 10 days; serious breaches may expedite eviction.",
+                useCase: "When tenant asks: 'Can I be evicted for noise?' → 'Sec. 47 allows eviction for cause with 1 month’s notice, but you can dispute.'"
+            },
+            {
+                issue: "Pet damages",
+                section: "Section 13 - Pet Damage Deposit",
+                whatItSays: "Landlords can charge a pet damage deposit up to half one month's rent.",
+                whatItMeans: "Tenants with pets may owe an extra deposit for potential damage.",
+                example: "Landlord charges $500 pet deposit for a $1000/month rental.",
+                exceptions: "Deposit can’t exceed half one month’s rent; must be returned per RTB rules.",
+                useCase: "When tenant asks: 'Can landlord charge for my pet?' → 'Sec. 13 allows a pet deposit up to half one month’s rent.'"
+            },
+            {
+                issue: "Landlord retaliation against tenant",
+                section: "Section 51 - Retaliatory Eviction",
+                whatItSays: "Landlords cannot evict tenants for exercising legal rights.",
+                whatItMeans: "Tenants are protected from revenge evictions for complaints or actions.",
+                example: "Landlord tries to evict after tenant requests repairs; tenant can challenge via RTB.",
+                exceptions: "Eviction is valid if based on unrelated breaches (e.g., unpaid rent).",
+                useCase: "When tenant asks: 'Can landlord evict me for complaining?' → 'Sec. 51 protects against retaliation; file RTB-12 to dispute.'"
+            },
+            {
+                issue: "Violation of quiet enjoyment",
+                section: "Section 28 - Quiet Enjoyment",
+                whatItSays: "Tenants are entitled to privacy and freedom from disturbances.",
+                whatItMeans: "Landlords must ensure tenants can live peacefully in their unit.",
+                example: "Landlord’s loud renovations disturb tenant; tenant can file RTB claim.",
+                exceptions: "Minor, unavoidable disruptions (e.g., brief repairs) may not qualify.",
+                useCase: "When tenant asks: 'What if landlord is too noisy?' → 'Sec. 28 protects your quiet enjoyment; you can file with RTB.'"
+            },
+            {
+                issue: "Landlord changes locks without notice",
+                section: "Section 31 - Locks and Access",
+                whatItSays: "Landlords cannot change locks without giving tenants new keys.",
+                whatItMeans: "Tenants must always have access to their unit.",
+                example: "Landlord changes locks after dispute; tenant can’t enter without new key.",
+                exceptions: "None; changing locks without access is always a violation.",
+                useCase: "When tenant asks: 'Can landlord lock me out?' → 'Sec. 31 says no; you can seek RTB remedies for access restoration.'"
+            },
+            {
+                issue: "Tenancy during property sale",
+                section: "Section 49 - Sale of Property",
+                whatItSays: "Tenancy continues unless purchaser or family intends to occupy with 2 months’ notice.",
+                whatItMeans: "Selling a property doesn’t automatically end a tenancy.",
+                example: "Property is sold, but tenant stays unless buyer plans to move in.",
+                exceptions: "Tenant may get 12 months’ rent if buyer doesn’t occupy as stated.",
+                useCase: "When tenant asks: 'Can I stay if the house is sold?' → 'Sec. 49 says yes, unless buyer needs to occupy.'"
+            },
+            {
+                issue: "Disputes over reasonable wear and tear",
+                section: "Section 37 - Wear and Tear",
+                whatItSays: "Tenants are not responsible for reasonable wear and tear from normal use.",
+                whatItMeans: "Normal aging of a unit (e.g., worn paint) isn’t tenant’s fault.",
+                example: "Landlord charges for scuffed walls; tenant disputes as normal wear.",
+                exceptions: "Tenants are liable for intentional or negligent damage.",
+                useCase: "When tenant asks: 'Do I pay for worn carpet?' → 'Sec. 37 says no for normal wear; dispute via RTB.'"
+            },
+            {
+                issue: "Illegal terms in tenancy agreements",
+                section: "Section 5 - Illegal Terms",
+                whatItSays: "Terms that avoid or contract out of RTA are unenforceable.",
+                whatItMeans: "Illegal clauses in leases have no legal weight.",
+                example: "Lease says ‘no repairs by landlord’; tenant can still demand repairs.",
+                exceptions: "None; RTA overrides conflicting terms.",
+                useCase: "When tenant asks: 'Is my lease term valid?' → 'Sec. 5 says illegal terms are void; check with RTB.'"
+            },
+            {
+                issue: "Tenant rights to withhold rent",
+                section: "Section 33 - Withholding Rent",
+                whatItSays: "Tenants can withhold rent for emergency repairs after reasonable notice.",
+                whatItMeans: "Tenants can fund urgent fixes if landlord ignores them.",
+                example: "Tenant withholds rent to fix a broken pipe after notifying landlord.",
+                exceptions: "Must follow RTB guidelines or risk eviction for non-payment.",
+                useCase: "When tenant asks: 'Can I withhold rent for repairs?' → 'Sec. 33 allows it for emergencies, but follow RTB rules.'"
+            },
+            {
+                issue: "Landlord failure to provide services",
+                section: "Section 27 - Services and Facilities",
+                whatItSays: "Landlords must provide agreed services (e.g., heat, water).",
+                whatItMeans: "Tenants are entitled to essential services included in the lease.",
+                example: "Landlord cuts off heat; tenant files RTB claim for compensation.",
+                exceptions: "Temporary disruptions for repairs may be allowed.",
+                useCase: "When tenant asks: 'What if there’s no heat?' → 'Sec. 27 requires landlord to provide services; file with RTB.'"
+            },
+            {
+                issue: "Disputes over additional fees",
+                section: "Section 7 - Additional Fees",
+                whatItSays: "Landlords cannot charge fees beyond rent, security, or pet deposits unless agreed.",
+                whatItMeans: "Extra fees (e.g., cleaning fees) are illegal unless in the lease.",
+                example: "Landlord charges move-in fee; tenant disputes as illegal.",
+                exceptions: "Fees agreed in tenancy agreement are valid.",
+                useCase: "When tenant asks: 'Can landlord charge a cleaning fee?' → 'Sec. 7 says no unless agreed; dispute via RTB.'"
+            },
+            {
+                issue: "Tenant rights during renovations",
+                section: "Section 49.2 - Renovations",
+                whatItSays: "Tenants in 5+ unit buildings have first refusal to return after renovations.",
+                whatItMeans: "Tenants can return post-renovation at landlord-set rent.",
+                example: "Tenant evicted for renovations but offered return at new rent.",
+                exceptions: "Only applies to buildings with 5+ units; 2 months’ notice required.",
+                useCase: "When tenant asks: 'Can I return after renovations?' → 'Sec. 49.2 gives first refusal in 5+ unit buildings.'"
+            },
+            {
+                issue: "Landlord’s obligation to provide tenancy agreement",
+                section: "Section 13 - Tenancy Agreement",
+                whatItSays: "Landlords must provide a written tenancy agreement with standard terms.",
+                whatItMeans: "Tenants are entitled to a clear, written lease outlining rights and obligations.",
+                example: "Landlord gives tenant a signed agreement within 21 days of tenancy start.",
+                exceptions: "Verbal agreements are valid but harder to enforce; RTB can order compliance.",
+                useCase: "When tenant asks: 'Do I need a written lease?' → 'Sec. 13 requires a written agreement; request one or file with RTB.'"
+            },
+            {
+                issue: "Tenant’s right to end tenancy early",
+                section: "Section 45.1 - Early Termination",
+                whatItSays: "Tenants can end fixed-term tenancy early due to domestic violence or long-term care needs.",
+                whatItMeans: "Tenants facing serious personal issues can exit leases with protections.",
+                example: "Tenant ends lease early after obtaining a safety order, with 1 month’s notice.",
+                exceptions: "Requires specific documentation (e.g., safety order, medical confirmation).",
+                useCase: "When tenant asks: 'Can I break my lease for safety?' → 'Sec. 45.1 allows early termination with documentation; check RTB.'"
+            },
+            {
+                issue: "Payment of rent",
+                section: "Section 26 - Payment of Rent",
+                whatItSays: "Tenants must pay rent on the due date as per the tenancy agreement.",
+                whatItMeans: "Timely rent payment is a tenant’s obligation to maintain tenancy.",
+                example: "Tenant pays $1200 rent on the 1st of each month as agreed in the lease.",
+                exceptions: "Late payment may be excused with landlord consent or RTB dispute resolution.",
+                useCase: "When tenant asks: 'What if I pay rent late?' → 'Sec. 26 requires timely payment, but you can negotiate with landlord or file with RTB.'"
+            },
+            {
+                issue: "Tenant’s right to security devices",
+                section: "Section 30 - Privacy and Security Devices",
+                whatItSays: "Tenants may install or change security devices with landlord’s written consent.",
+                whatItMeans: "Tenants can enhance unit security but need landlord approval.",
+                example: "Tenant requests to install a deadbolt; landlord agrees in writing.",
+                exceptions: "Devices must not damage the unit or prevent landlord access.",
+                useCase: "When tenant asks: 'Can I add a lock?' → 'Sec. 30 allows it with landlord’s consent, provided no damage occurs.'"
+            }
+        ];
+
+        function renderFlashcards(filter = '') {
+            const container = document.getElementById('flashcard-container');
+            container.innerHTML = '';
+            const filteredCards = flashcards.filter(card =>
+                card.issue.toLowerCase().includes(filter.toLowerCase()) ||
+                card.section.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            // Create placeholders for fixed 3-column grid
+            const totalCells = Math.ceil(filteredCards.length / 3) * 3;
+            for (let i = 0; i < totalCells; i++) {
+                const cell = document.createElement('div');
+                cell.style.width = '400px';
+                cell.style.height = '250px';
+                cell.style.visibility = i < filteredCards.length ? 'visible' : 'hidden';
+
+                if (i < filteredCards.length) {
+                    const card = filteredCards[i];
+                    const flashcard = document.createElement('div');
+                    flashcard.className = 'flashcard';
+                    flashcard.innerHTML = `
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <div class="law-section">${card.section}</div>
+                            </div>
+                            <div class="flashcard-back">
+                                <div class="layer">
+                                    <div class="layer-title">What it says:</div>
+                                    <div class="layer-content">${card.whatItSays}</div>
+                                </div>
+                                <div class="layer">
+                                    <div class="layer-title">What it means:</div>
+                                    <div class="layer-content">${card.whatItMeans}</div>
+                                </div>
+                                <div class="layer">
+                                    <div class="layer-title">Example:</div>
+                                    <div class="layer-content">${card.example}</div>
+                                </div>
+                                <div class="layer">
+                                    <div class="layer-title">Exceptions:</div>
+                                    <div class="layer-content">${card.exceptions}</div>
+                                </div>
+                                <div class="use-case">
+                                    <strong>Use Case:</strong> ${card.useCase}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    flashcard.addEventListener('click', () => {
+                        flashcard.classList.toggle('flipped');
+                    });
+                    cell.appendChild(flashcard);
+                }
+
+                container.appendChild(cell);
+            }
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            renderFlashcards(e.target.value);
+        });
+
+        // Initial render
+        renderFlashcards();
+    </script>
+</body>
+</html>
